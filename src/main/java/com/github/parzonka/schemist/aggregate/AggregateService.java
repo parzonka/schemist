@@ -26,14 +26,14 @@ public interface AggregateService<A extends Aggregate<T>, T> {
   default A saveNewAggregate(JsonNode data) {
     A aggregate = newAggregate();
     aggregate.setData(data);
-    getRepository().save(aggregate);
+    getRepository().validateAndSave(aggregate);
     return aggregate;
   }
 
   default A modifyAggregate(UUID id, JsonNode data) {
     final A aggregate = getRepository().getById(id);
     aggregate.setData(data);
-    getRepository().save(aggregate);
+    getRepository().validateAndSave(aggregate);
     return aggregate;
   }
 
