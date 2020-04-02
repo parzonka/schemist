@@ -1,4 +1,4 @@
-package com.github.parzonka.schemist.aggregate;
+package com.github.parzonka.schemist.schema;
 
 import java.io.InputStream;
 
@@ -11,7 +11,7 @@ import com.networknt.schema.SpecVersion;
 
 import lombok.SneakyThrows;
 
-public class ValidationUtil {
+public class SchemaUtil {
 
   private static ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
   private static ObjectMapper jsonMapper = new ObjectMapper();
