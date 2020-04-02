@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class GenericAggregateController {
+public class AggregateController {
 
   private final List<AggregateRepository<? extends Aggregate<?>, ?>> aggregateRepositories;
 

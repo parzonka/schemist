@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SchemaController {
 
+  // TODO resolve port if server.port is not explicitly set
   @Value("${server.port}")
   private String serverPort;
 
