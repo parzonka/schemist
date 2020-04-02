@@ -26,7 +26,22 @@ public class ValidationUtilTest {
     final Set<ValidationMessage> errors = personSchema.validate(person);
     Assert.assertEquals(1, errors.size());
     Assert.assertEquals("[$.age: must have a minimum value of 0]", errors.toString());
+  }
 
+  @Test
+  public void shouldValidatePersons() throws Exception {
+    final JsonSchema schema = ValidationUtil.getYamlSchemaFromClasspath("schema/persons.schema.yaml");
+    final JsonNode instance = ValidationUtil.readJsonFromClasspath("instance/persons.json");
+    final Set<ValidationMessage> errors = schema.validate(instance);
+    Assert.assertEquals(0, errors.size());
+  }
+
+  @Test
+  public void shouldInvalidatePersons() throws Exception {
+    final JsonSchema schema = ValidationUtil.getYamlSchemaFromClasspath("schema/persons.schema.yaml");
+    final JsonNode instance = ValidationUtil.readJsonFromClasspath("instance/persons-invalid.json");
+    final Set<ValidationMessage> errors = schema.validate(instance);
+    Assert.assertEquals(1, errors.size());
   }
 
 }

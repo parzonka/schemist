@@ -1,5 +1,5 @@
 ---
-"$id": https://example.com/person.schema.json
+"$id": https://localhost:8080/schema/person.schema.json
 "$schema": http://json-schema.org/draft-07/schema#
 title: Person
 type: object
