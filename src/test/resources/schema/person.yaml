@@ -3,7 +3,7 @@ title: Person
 type: object
 properties:
   firstName:
-    $ref: types/text_short.schema.yaml
+    $ref: 'types/text.yaml#/definitions/short'
     description: The person's first name.
   lastName:
     type: string

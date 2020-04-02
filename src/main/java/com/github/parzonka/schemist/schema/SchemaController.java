@@ -27,7 +27,7 @@ public class SchemaController {
     log.debug("Requesting schema at path: " + path);
     final JsonNode jsonNode = SchemaUtil.readYamlFromClasspath("schema/" + path);
     final ObjectNode objectNode = (ObjectNode) jsonNode;
-    objectNode.put("$id", "http://localhost:" + serverPort + "/schema/persons.schema.yaml");
+    objectNode.put("$id", "http://localhost:" + serverPort + "/schema/" + path);
     objectNode.put("$schema", "http://json-schema.org/draft-07/schema#");
     return jsonNode;
   }

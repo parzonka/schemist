@@ -2,4 +2,4 @@
 title: Persons
 type: array
 items:
-  $ref: ./person.schema.yaml
+  $ref: ./person.yaml

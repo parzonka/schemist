@@ -1,0 +1,15 @@
+---
+definitions:
+  alphanumeric:
+    type: string
+    minLength: 1
+    pattern: ^[a-zA-Z0-9-_]+$
+  short:
+    $ref: '#/definitions/alphanumeric'
+    maxLength: 32
+  medium:
+    $ref: '#/definitions/alphanumeric'
+    maxLength: 128
+  long:
+    $ref: '#/definitions/alphanumeric'
+    maxLength: 256

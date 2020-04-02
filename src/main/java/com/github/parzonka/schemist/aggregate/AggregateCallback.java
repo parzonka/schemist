@@ -17,7 +17,7 @@ public class AggregateCallback implements BeforeConvertCallback<Aggregate<?>> {
       aggregate.setId(UUID.randomUUID());
       log.debug("New " + aggregate + " is going to be stored.");
     } else {
-      log.debug("New " + aggregate + " is going to be stored.");
+      log.debug("Existing " + aggregate + " is going to be updated.");
     }
     return aggregate;
   }

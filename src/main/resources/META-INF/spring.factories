@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.github.parzonka.schemist.jdbc.PostgresJsonbConfig,\
 com.github.parzonka.schemist.aggregate.AggregateCallback,\
-com.github.parzonka.schemist.aggregate.GenericAggregateController
+com.github.parzonka.schemist.aggregate.GenericAggregateController,\
+com.github.parzonka.schemist.schema.SchemaController
