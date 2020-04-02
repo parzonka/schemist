@@ -13,8 +13,6 @@ import org.springframework.web.server.ResponseStatusException;
 @NoRepositoryBean
 public interface AggregateRepository<A extends Aggregate<T>, T> extends CrudRepository<A, UUID> {
 
-  String getCollectionId();
-
   default A addNew(Supplier<A> supplier) {
     final A aggregate = supplier.get();
     return save(aggregate);

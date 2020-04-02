@@ -39,21 +39,14 @@ public class AggregateController {
   }
 
   @PutMapping("/{collectionId}/{aggregateId}")
-  public Aggregate<?> overwriteAggregate(@PathVariable String collectionId, @PathVariable UUID aggregateId,
+  public Aggregate<?> modifyAggregate(@PathVariable String collectionId, @PathVariable UUID aggregateId,
       @RequestBody JsonNode requestBody) {
-    log.debug("Overwriting aggregate {} with {}", aggregateId, requestBody);
-    return findRepo(collectionId).getById(aggregateId);
+    log.debug("Requesting to modify aggregate {} using  : {}", aggregateId, requestBody);
+    return findService(collectionId).modifyAggregate(aggregateId, requestBody);
   }
 
   public AggregateRepository<? extends Aggregate<?>, ?> findRepo(String collectionId) {
-    if (collectionId == null) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
-    return aggregateRepositories.stream()
-        .filter(ar -> collectionId.equals(ar.getCollectionId()))
-        .findAny()
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-            "Collection " + collectionId + " not found (Repository is missing)"));
+    return findService(collectionId).getRepository();
   }
 
   public AggregateService<? extends Aggregate<?>, ?> findService(String collectionId) {
@@ -61,14 +54,12 @@ public class AggregateController {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     return aggregateServices.stream()
-        .filter(ar -> collectionId.equals(ar.getRepository()
-            .getCollectionId()))
+        .filter(ar -> collectionId.equals(ar.getCollectionId()))
         .findAny()
         .orElseThrow(() -> {
-          final String message = "Collection '" + collectionId + "' not found (Service is missing)";
+          final String message = "Collection '" + collectionId + "' not found";
           log.debug(message + ". We know the following services: " + aggregateServices);
-          return new ResponseStatusException(HttpStatus.NOT_FOUND,
-              "Collection '" + collectionId + "' not found (Service is missing)");
+          return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         });
   }
 
