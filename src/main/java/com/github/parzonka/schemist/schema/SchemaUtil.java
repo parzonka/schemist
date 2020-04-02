@@ -1,6 +1,7 @@
 package com.github.parzonka.schemist.schema;
 
 import java.io.InputStream;
+import java.net.URI;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +11,9 @@ import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersion;
 
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class SchemaUtil {
 
   private static ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
@@ -31,8 +34,17 @@ public class SchemaUtil {
   }
 
   @SneakyThrows
+  public static JsonSchema getJsonSchemaFromUrl(String url) {
+    JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7);
+    final URI uri = new URI(url);
+    JsonSchema schema = factory.getSchema(uri);
+    return schema;
+  }
+
+  @SneakyThrows
   public static JsonNode readYamlFromClasspath(String path) {
     final InputStream is = getInputStreamFromClasspath(path);
+    log.info("Looking for YAML at classpath: " + path);
     final JsonNode jsonNode = yamlMapper.readTree(is);
     return jsonNode;
   }
