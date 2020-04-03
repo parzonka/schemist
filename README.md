@@ -20,6 +20,7 @@ Toy project for toy projects.
 - schema-based commands and command handlers
 - optimistic locking
 - auditing
+- add tests not depending on running server and Postgres
 
 ## How To
 

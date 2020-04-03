@@ -3,12 +3,14 @@ package com.github.parzonka.schemist.schema;
 import java.util.Set;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.ValidationMessage;
 
+@Ignore
 public class SchemaUtilTest {
 
   @Test
