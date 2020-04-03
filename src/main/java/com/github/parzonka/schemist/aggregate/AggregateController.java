@@ -33,16 +33,30 @@ public class AggregateController {
 
   @PostMapping("/{collectionId}")
   public Aggregate<?> addNewAggregate(@PathVariable String collectionId, @RequestBody JsonNode requestBody) {
-    log.debug("Requesting to add new aggregate: {}", requestBody);
+    log.debug("POST of new aggregate requested with body: {}", requestBody);
     final Aggregate<?> aggregate = findService(collectionId).saveNewAggregate(requestBody);
     return aggregate;
   }
 
   @PutMapping("/{collectionId}/{aggregateId}")
-  public Aggregate<?> modifyAggregate(@PathVariable String collectionId, @PathVariable UUID aggregateId,
+  public Aggregate<?> putAggregate(@PathVariable String collectionId, @PathVariable UUID aggregateId,
       @RequestBody JsonNode requestBody) {
-    log.debug("Requesting to modify aggregate {} using  : {}", aggregateId, requestBody);
+    log.debug("PUT of aggregate {} requested with body: {}", aggregateId, requestBody);
     return findService(collectionId).modifyAggregate(aggregateId, requestBody);
+  }
+
+  @PatchMapping("/{collectionId}/{aggregateId}")
+  public Aggregate<?> patchAggregate(@PathVariable String collectionId, @PathVariable UUID aggregateId,
+      @RequestBody JsonNode requestBody) {
+    log.debug("PATCH of aggregate {} requested with body: {}", aggregateId, requestBody);
+    return findService(collectionId).partiallyUpdateAggregate(aggregateId, requestBody);
+  }
+
+  @DeleteMapping("/{collectionId}/{aggregateId}")
+  public void deleteAggregate(@PathVariable String collectionId, @PathVariable UUID aggregateId,
+      @RequestBody JsonNode requestBody) {
+    log.debug("DELETE of aggregate {} requested", aggregateId, requestBody);
+    findRepo(collectionId).deleteById(aggregateId);
   }
 
   public AggregateRepository<? extends Aggregate<?>, ?> findRepo(String collectionId) {
