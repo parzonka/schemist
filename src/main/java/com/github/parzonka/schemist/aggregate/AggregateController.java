@@ -2,6 +2,7 @@ package com.github.parzonka.schemist.aggregate;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AggregateController {
 
-  private final List<AggregateRepository<? extends Aggregate<?>, ?>> aggregateRepositories;
   private final List<AggregateService<? extends Aggregate<?>, ?>> aggregateServices;
 
   @GetMapping("/{collectionId}")
@@ -71,8 +71,11 @@ public class AggregateController {
         .filter(ar -> collectionId.equals(ar.getCollectionId()))
         .findAny()
         .orElseThrow(() -> {
-          final String message = "Collection '" + collectionId + "' not found";
-          log.debug(message + ". We know the following services: " + aggregateServices);
+          final String message = "Collection endpoint '" + collectionId
+              + "' not found. Available collection endpoints: " + aggregateServices.stream()
+                  .map(as -> as.getCollectionId())
+                  .collect(Collectors.toList());
+          log.debug(message);
           return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         });
   }
