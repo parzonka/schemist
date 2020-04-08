@@ -1,4 +1,4 @@
-package com.github.parzonka.schemist.scaffold;
+package test;
 
 import com.github.parzonka.schemist.aggregate.Aggregate;
 import com.github.parzonka.testapp.person.Person;

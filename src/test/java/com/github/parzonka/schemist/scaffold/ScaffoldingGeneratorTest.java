@@ -5,7 +5,7 @@ import org.junit.Test;
 import com.github.parzonka.schemist.aggregate.AggregateSpec;
 import com.github.parzonka.testapp.person.Person;
 
-public class GenerateAggregateTest {
+public class ScaffoldingGeneratorTest {
 
   @Test
   public void should_generate() throws Exception {
@@ -15,8 +15,11 @@ public class GenerateAggregateTest {
         .localizedPlural("Persons")
         .schemaUrl("/schema/person.yaml")
         .build();
-    final String foo = GenerateAggregate.aggregate(aggregateSpec, "foo");
-    System.out.println(foo);
+    final ScaffoldingGenerator scaffoldingGenerator = ScaffoldingGenerator.builder()
+        .prefix("target/generated")
+        .packageName("test")
+        .build();
+    scaffoldingGenerator.generateFiles(aggregateSpec);
   }
 
 }
