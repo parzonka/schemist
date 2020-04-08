@@ -80,4 +80,15 @@ public interface AggregateService<A extends Aggregate<T>, T> {
     return mainNode;
   }
 
+  default A handleCommandById(UUID aggregateId, String commandId, JsonNode command) {
+    final A aggregate = getRepository().getById(aggregateId);
+    final A handled = handleCommand(aggregate, commandId, command);
+    getRepository().save(handled);
+    return handled;
+  }
+
+  default A handleCommand(A aggregate, String commandId, JsonNode command) {
+    return aggregate;
+  }
+
 }

@@ -59,6 +59,15 @@ public class AggregateController {
     findRepo(collectionId).deleteById(aggregateId);
   }
 
+  @PostMapping("/{collectionId}/{aggregateId}/{commandId}")
+  public Aggregate<?> applyCommand(@PathVariable String collectionId, @PathVariable UUID aggregateId,
+      @PathVariable String commandId, @RequestBody JsonNode requestBody) {
+    log.debug("POST of command '{}' to be handled by aggregate '{}':'{}' command with body: {}", commandId,
+        collectionId, aggregateId, requestBody);
+    final Aggregate<?> aggregate = findService(collectionId).handleCommandById(aggregateId, commandId, requestBody);
+    return aggregate;
+  }
+
   public AggregateRepository<? extends Aggregate<?>, ?> findRepo(String collectionId) {
     return findService(collectionId).getRepository();
   }
