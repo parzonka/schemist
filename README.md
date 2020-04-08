@@ -16,13 +16,14 @@ Toy project for toy projects.
 
 ## Roadmap
 
-- hooks for services
-- schema-based commands and command handlers
-- optimistic locking
-- auditing
-- add tests not depending on running server and Postgres
+- Scaffolding
+- Hooks for commands
+- Schema-based commands and command handlers
+- Optimistic locking
+- Auditing
+- Add tests not depending on running server and Postgres
 
-## How To
+## How To...
 
 ### Remove Stacktraces from ResponseStatusException
 
