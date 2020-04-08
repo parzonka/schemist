@@ -5,6 +5,7 @@ import javax.lang.model.element.Modifier;
 import org.springframework.data.relational.core.mapping.Table;
 
 import com.github.parzonka.schemist.aggregate.Aggregate;
+import com.github.parzonka.schemist.aggregate.AggregateSpec;
 import com.squareup.javapoet.*;
 
 import lombok.SneakyThrows;
@@ -12,24 +13,25 @@ import lombok.SneakyThrows;
 public class GenerateAggregate {
 
   @SneakyThrows
-  public static void main(String[] args) {
+  public static String aggregate(AggregateSpec aggregateSpec, String packageName) {
 
     MethodSpec constructor = MethodSpec.constructorBuilder()
         .addModifiers(Modifier.PUBLIC)
-        .addStatement("super($N.class)", "Greeting")
+        .addStatement("super($N.class)", aggregateSpec.getAggregateType()
+            .getSimpleName())
         .build();
 
-    TypeSpec aggregate = TypeSpec.classBuilder("SomeAggregate")
+    TypeSpec aggregate = TypeSpec.classBuilder(aggregateSpec.getLocalizedSingular() + "Aggregate")
         .addModifiers(Modifier.PUBLIC)
-        .addSuperinterface(ParameterizedTypeName.get(Aggregate.class, String.class))
-        .addAnnotation(tableAnnotation("SomeTable"))
+        .superclass(ParameterizedTypeName.get(Aggregate.class, aggregateSpec.getAggregateType()))
+        .addAnnotation(tableAnnotation(aggregateSpec.getLocalizedPlural()))
         .addMethod(constructor)
         .build();
 
-    JavaFile javaFile = JavaFile.builder("com.example", aggregate)
+    JavaFile javaFile = JavaFile.builder(packageName, aggregate)
         .build();
 
-    javaFile.writeTo(System.out);
+    return javaFile.toString();
   }
 
   static AnnotationSpec tableAnnotation(String tableName) {
