@@ -20,21 +20,20 @@ public class ScaffoldingGenerator {
   String prefix = "";
 
   public void generateFiles(AggregateSpec aggregateSpec) {
-    final String aggregate = GenerateAggregate.aggregate(aggregateSpec, packageName);
-    writeAggregate(aggregateSpec, aggregate);
+    final String aggregate = GenerateAggregate.generateAggregate(aggregateSpec, packageName);
+    write(aggregateSpec, aggregate, "Aggregate");
+    final String repository = GenerateRepository.generateRepository(aggregateSpec, packageName);
+    write(aggregateSpec, repository, "Repository");
+    System.out.println(repository);
   }
 
   @SneakyThrows
-  private void writeAggregate(final AggregateSpec aggregateSpec, final String aggregate) {
-    final String dir = path();
+  private void write(final AggregateSpec aggregateSpec, final String content, final String name) {
+    final String dir = prefix + packageName.replace(".", "/");
     final Path dirPath = Paths.get(dir);
-    final Path filePath = Paths.get(dir + "/" + aggregateSpec.getLocalizedSingular() + "Aggregate.java");
+    final Path filePath = Paths.get(dir + "/" + aggregateSpec.getLocalizedSingular() + name + ".java");
     Files.createDirectories(dirPath);
-    Files.writeString(filePath, aggregate, Charset.forName("UTF-8"));
-  }
-
-  private String path() {
-    return "src/main/java/" + packageName.replace(".", "/");
+    Files.writeString(filePath, content, Charset.forName("UTF-8"));
   }
 
 }
