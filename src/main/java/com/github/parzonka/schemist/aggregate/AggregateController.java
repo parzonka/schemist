@@ -28,7 +28,7 @@ public class AggregateController {
 
   @GetMapping("/{collectionId}/{aggregateId}")
   public Aggregate<?> getAggregate(@PathVariable String collectionId, @PathVariable UUID aggregateId) {
-    return findRepo(collectionId).getById(aggregateId);
+    return findService(collectionId).getById(aggregateId);
   }
 
   @PostMapping("/{collectionId}")

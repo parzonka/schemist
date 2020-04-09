@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class PersonService implements AggregateService<PersonAggregate, Person> {
+public class PersonService extends AggregateService<PersonAggregate, Person> {
 
   @Getter
   private final PersonRepository repository;
