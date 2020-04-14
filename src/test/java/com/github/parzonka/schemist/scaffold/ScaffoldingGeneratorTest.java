@@ -1,14 +1,20 @@
 package com.github.parzonka.schemist.scaffold;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.parzonka.schemist.aggregate.AggregateSpec;
-import com.github.parzonka.testapp.person.Person;
+import com.github.parzonka.testapp.schema.Person;
+
+import lombok.SneakyThrows;
 
 public class ScaffoldingGeneratorTest {
 
   @Test
-  public void should_generate() throws Exception {
+  public void should_generate_person_sources() throws Exception {
     final AggregateSpec aggregateSpec = AggregateSpec.builder()
         .aggregateType(Person.class)
         .localizedSingular("Person")
@@ -16,10 +22,25 @@ public class ScaffoldingGeneratorTest {
         .schemaUrl("/schema/person.yaml")
         .build();
     final ScaffoldingGenerator scaffoldingGenerator = ScaffoldingGenerator.builder()
-        .prefix("target/generated")
-        .packageName("test")
+        .prefix("target/generated/")
+        .packageName("com.github.parzonka.testapp")
         .build();
+
+    // when
     scaffoldingGenerator.generateFiles(aggregateSpec);
+
+    // then
+    assertGeneratedIsEqualsToTestappSource("com/github/parzonka/testapp/person/PersonAggregate.java");
+    assertGeneratedIsEqualsToTestappSource("com/github/parzonka/testapp/person/PersonService.java");
+    assertGeneratedIsEqualsToTestappSource("com/github/parzonka/testapp/person/PersonRepository.java");
+
+  }
+
+  @SneakyThrows
+  private static void assertGeneratedIsEqualsToTestappSource(String type) {
+    final String expected = Files.readString(Paths.get("src/test/java/" + type));
+    final String generated = Files.readString(Paths.get("target/generated/" + type));
+    Assert.assertEquals(expected, generated);
   }
 
 }

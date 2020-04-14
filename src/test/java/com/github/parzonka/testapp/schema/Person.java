@@ -1,4 +1,4 @@
-package com.github.parzonka.testapp.person;
+package com.github.parzonka.testapp.schema;
 
 import java.util.HashMap;
 import java.util.Map;

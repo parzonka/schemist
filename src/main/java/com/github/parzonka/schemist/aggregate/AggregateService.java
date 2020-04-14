@@ -24,7 +24,6 @@ public abstract class AggregateService<A extends Aggregate<T>, T> {
 
   @Autowired
   void setWebContext(WebContext webContext) {
-    System.out.println("WebContext injected " + webContext);
     this.webContext = webContext;
   }
 
@@ -91,7 +90,7 @@ public abstract class AggregateService<A extends Aggregate<T>, T> {
         if (mainNode instanceof ObjectNode) {
           // Overwrite field
           JsonNode value = updateNode.get(fieldName);
-          ((ObjectNode) mainNode).put(fieldName, value);
+          ((ObjectNode) mainNode).replace(fieldName, value);
         }
       }
 
@@ -100,14 +99,14 @@ public abstract class AggregateService<A extends Aggregate<T>, T> {
     return mainNode;
   }
 
-  A handleCommandById(UUID aggregateId, String commandId, JsonNode command) {
+  protected A handleCommandById(UUID aggregateId, String commandId, JsonNode command) {
     final A aggregate = getById(aggregateId);
     final A handled = handleCommand(aggregate, commandId, command);
     getRepository().save(handled);
     return handled;
   }
 
-  A handleCommand(A aggregate, String commandId, JsonNode command) {
+  protected A handleCommand(A aggregate, String commandId, JsonNode command) {
     return aggregate;
   }
 
@@ -148,7 +147,7 @@ public abstract class AggregateService<A extends Aggregate<T>, T> {
     return aggregate;
   }
 
-  void validate(A aggregate) {
+  protected void validate(A aggregate) {
     final String simpleName = aggregate.getType()
         .getSimpleName();
     final String shortName = simpleName.toLowerCase();

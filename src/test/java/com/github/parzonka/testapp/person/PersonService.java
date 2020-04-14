@@ -3,6 +3,7 @@ package com.github.parzonka.testapp.person;
 import org.springframework.stereotype.Service;
 
 import com.github.parzonka.schemist.aggregate.AggregateService;
+import com.github.parzonka.testapp.schema.Person;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
