@@ -11,10 +11,13 @@ public class AggregateSpec {
   String schemaUrl;
   String localizedPlural;
   String localizedSingular;
-  String resourceName;
 
   public String getPackageName() {
     return aggregateType.getPackageName();
+  }
+
+  public String getCollectionId() {
+    return localizedPlural.toLowerCase();
   }
 
 }
