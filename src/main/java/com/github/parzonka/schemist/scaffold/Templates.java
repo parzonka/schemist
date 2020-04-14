@@ -17,13 +17,13 @@ public class Templates {
     sb.append("import org.springframework.data.relational.core.mapping.Table;\n");
     sb.append(NEWLINE);
     sb.append("import com.github.parzonka.schemist.aggregate.Aggregate;\n");
-    sb.append("import TYPE;\n");
+    sb.append("import QUALIFIED_TYPE;\n");
     sb.append(NEWLINE);
     sb.append("@Table(\"PLURAL_LC\")\n");
-    sb.append("public class SINGULARAggregate extends Aggregate<SINGULAR> {\n");
+    sb.append("public class SINGULARAggregate extends Aggregate<TYPE> {\n");
     sb.append(NEWLINE);
     sb.append("  public SINGULARAggregate() {\n");
-    sb.append("    super(SINGULAR.class);\n");
+    sb.append("    super(TYPE.class);\n");
     sb.append("  }\n");
     sb.append("}\n");
     return sb.toString();
@@ -35,9 +35,9 @@ public class Templates {
     sb.append(PACKAGE);
     sb.append(NEWLINE);
     sb.append("import com.github.parzonka.schemist.aggregate.AggregateRepository;\n");
-    sb.append("import TYPE;\n");
+    sb.append("import QUALIFIED_TYPE;\n");
     sb.append(NEWLINE);
-    sb.append("public interface SINGULARRepository extends AggregateRepository<SINGULARAggregate, SINGULAR> {\n");
+    sb.append("public interface SINGULARRepository extends AggregateRepository<SINGULARAggregate, TYPE> {\n");
     sb.append(NEWLINE);
     sb.append("}\n");
     return sb.toString();
@@ -51,14 +51,14 @@ public class Templates {
     sb.append("import org.springframework.stereotype.Service;\n");
     sb.append(NEWLINE);
     sb.append("import com.github.parzonka.schemist.aggregate.AggregateService;\n");
-    sb.append("import TYPE;\n");
+    sb.append("import QUALIFIED_TYPE;\n");
     sb.append(NEWLINE);
     sb.append("import lombok.Getter;\n");
     sb.append("import lombok.RequiredArgsConstructor;\n");
     sb.append(NEWLINE);
     sb.append("@Service\n");
     sb.append("@RequiredArgsConstructor\n");
-    sb.append("public class SINGULARService extends AggregateService<SINGULARAggregate, SINGULAR> {\n");
+    sb.append("public class SINGULARService extends AggregateService<SINGULARAggregate, TYPE> {\n");
     sb.append(NEWLINE);
     sb.append("  @Getter\n");
     sb.append("  private final SINGULARRepository repository;\n");
@@ -85,8 +85,10 @@ public class Templates {
         .replaceAll("PLURAL_LC", aggregateSpec.getLocalizedPlural()
             .toLowerCase())
         .replaceAll("PLURAL", aggregateSpec.getLocalizedPlural())
+        .replaceAll("QUALIFIED_TYPE", aggregateSpec.getAggregateType()
+            .getName())
         .replaceAll("TYPE", aggregateSpec.getAggregateType()
-            .getName());
+            .getSimpleName());
   }
 
 }
