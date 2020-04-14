@@ -4,6 +4,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.github.parzonka.schemist.aggregate.AggregateSpec;
 
@@ -22,6 +24,21 @@ public class ScaffoldingGenerator {
   String prefix = "";
   @Builder.Default
   String schemaPackage = "/schema";
+
+  public void generateFiles(List<AggregateSpec> aggregateSpecs) {
+    aggregateSpecs.forEach(aggregateSpec -> {
+      writeJavaSource(aggregateSpec, Templates.fillTemplate(Templates.aggregateTemplate(), aggregateSpec, packageName),
+          "Aggregate");
+      writeJavaSource(aggregateSpec, Templates.fillTemplate(Templates.repositoryTemplate(), aggregateSpec, packageName),
+          "Repository");
+      writeJavaSource(aggregateSpec, Templates.fillTemplate(Templates.serviceTemplate(), aggregateSpec, packageName),
+          "Service");
+    });
+    final String migration = aggregateSpecs.stream()
+        .map(aggregateSpec -> Templates.fillTemplate(Templates.postgresTemplate(), aggregateSpec, packageName))
+        .collect(Collectors.joining("\n"));
+    writeFlywayMigration(migration);
+  }
 
   public void generateFiles(AggregateSpec aggregateSpec) {
     writeJavaSource(aggregateSpec, Templates.fillTemplate(Templates.aggregateTemplate(), aggregateSpec, packageName),

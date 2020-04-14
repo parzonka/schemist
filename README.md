@@ -15,14 +15,14 @@ Toy project for toy projects.
 - Generic Spring MVC controller for CRUD operations
 - Generic Spring MVC controller to publish schemata files as `/schema/**/*.yaml`
 - Schema instance validation at POST/PUT/PATCH request time and before persisting to Postgres
+- Scaffolding
 
 ## Roadmap
 
-- Scaffolding
+- Auditing
 - Hooks for commands
 - Schema-based commands and command handlers
 - Optimistic locking
-- Auditing
 - Add tests not depending on running server and Postgres
 
 ## How To...

@@ -2,6 +2,7 @@ package com.github.parzonka.schemist.scaffold;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,19 +16,20 @@ public class ScaffoldingGeneratorTest {
 
   @Test
   public void should_generate_person_sources() throws Exception {
-    final AggregateSpec aggregateSpec = AggregateSpec.builder()
+    final AggregateSpec personSpec = AggregateSpec.builder()
         .aggregateType(Person.class)
         .localizedSingular("Person")
         .localizedPlural("Persons")
         .schemaUrl("/schema/person.yaml")
         .build();
+
     final ScaffoldingGenerator scaffoldingGenerator = ScaffoldingGenerator.builder()
         .prefix("target/generated/")
         .packageName("com.github.parzonka.testapp")
         .build();
 
     // when
-    scaffoldingGenerator.generateFiles(aggregateSpec);
+    scaffoldingGenerator.generateFiles(Arrays.asList(personSpec));
 
     // then
     assertGeneratedIsEqualsToTestappSource("com/github/parzonka/testapp/person/PersonAggregate.java");
