@@ -1,6 +1,8 @@
 package com.github.parzonka.schemist.aggregate;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -20,6 +22,17 @@ import lombok.extern.slf4j.Slf4j;
 public class AggregateController {
 
   private final List<AggregateService<? extends Aggregate<?>, ?>> aggregateServices;
+  private final Optional<AggregateSpecRegistry> aggregateSpecRegistry;
+
+  @GetMapping
+  public List<AggregateSpec> getAll() {
+    if (aggregateSpecRegistry.isPresent()) {
+      return aggregateSpecRegistry.get()
+          .getAggregateSpecs();
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
   @GetMapping("/{collectionId}")
   public Iterable<? extends Aggregate<?>> getAllByCollectionId(@PathVariable String collectionId) {
