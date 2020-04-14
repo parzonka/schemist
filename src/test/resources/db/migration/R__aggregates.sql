@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS person (
+   ID UUID NOT NULL PRIMARY KEY,
+   data jsonb
+);

@@ -24,19 +24,30 @@ public class ScaffoldingGenerator {
   String schemaPackage = "/schema";
 
   public void generateFiles(AggregateSpec aggregateSpec) {
-    write(aggregateSpec, Templates.fillTemplate(Templates.aggregateTemplate(), aggregateSpec, packageName),
+    writeJavaSource(aggregateSpec, Templates.fillTemplate(Templates.aggregateTemplate(), aggregateSpec, packageName),
         "Aggregate");
-    write(aggregateSpec, Templates.fillTemplate(Templates.repositoryTemplate(), aggregateSpec, packageName),
+    writeJavaSource(aggregateSpec, Templates.fillTemplate(Templates.repositoryTemplate(), aggregateSpec, packageName),
         "Repository");
-    write(aggregateSpec, Templates.fillTemplate(Templates.serviceTemplate(), aggregateSpec, packageName), "Service");
+    writeJavaSource(aggregateSpec, Templates.fillTemplate(Templates.serviceTemplate(), aggregateSpec, packageName),
+        "Service");
+    writeFlywayMigration(Templates.fillTemplate(Templates.postgresTemplate(), aggregateSpec, packageName));
   }
 
   @SneakyThrows
-  private void write(final AggregateSpec aggregateSpec, final String content, final String name) {
-    final String dir = prefix + packageName.replace(".", "/") + "/" + aggregateSpec.getLocalizedSingular()
+  private void writeJavaSource(final AggregateSpec aggregateSpec, final String content, final String name) {
+    final String dir = prefix + "java/" + packageName.replace(".", "/") + "/" + aggregateSpec.getLocalizedSingular()
         .toLowerCase();
     final Path dirPath = Paths.get(dir);
     final Path filePath = Paths.get(dir + "/" + aggregateSpec.getLocalizedSingular() + name + ".java");
+    Files.createDirectories(dirPath);
+    Files.writeString(filePath, content, Charset.forName("UTF-8"));
+  }
+
+  @SneakyThrows
+  private void writeFlywayMigration(final String content) {
+    final String dir = prefix + "resources/db/migration";
+    final Path dirPath = Paths.get(dir);
+    final Path filePath = Paths.get(dir + "/R__aggregates.sql");
     Files.createDirectories(dirPath);
     Files.writeString(filePath, content, Charset.forName("UTF-8"));
   }

@@ -19,7 +19,7 @@ public class Templates {
     sb.append("import com.github.parzonka.schemist.aggregate.Aggregate;\n");
     sb.append("import QUALIFIED_TYPE;\n");
     sb.append(NEWLINE);
-    sb.append("@Table(\"PLURAL_LC\")\n");
+    sb.append("@Table(\"SINGULAR_LC\")\n");
     sb.append("public class SINGULARAggregate extends Aggregate<TYPE> {\n");
     sb.append(NEWLINE);
     sb.append("  public SINGULARAggregate() {\n");
@@ -74,6 +74,15 @@ public class Templates {
     sb.append("  }\n");
     sb.append(NEWLINE);
     sb.append("}\n");
+    return sb.toString();
+  }
+
+  public static String postgresTemplate() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("CREATE TABLE IF NOT EXISTS SINGULAR_LC (\n");
+    sb.append("   ID UUID NOT NULL PRIMARY KEY,\n");
+    sb.append("   data jsonb\n");
+    sb.append(");\n");
     return sb.toString();
   }
 
