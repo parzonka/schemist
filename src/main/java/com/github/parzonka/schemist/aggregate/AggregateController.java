@@ -66,9 +66,8 @@ public class AggregateController {
   }
 
   @DeleteMapping("/{collectionId}/{aggregateId}")
-  public void deleteAggregate(@PathVariable String collectionId, @PathVariable UUID aggregateId,
-      @RequestBody JsonNode requestBody) {
-    log.debug("DELETE of aggregate {} requested", aggregateId, requestBody);
+  public void deleteAggregate(@PathVariable String collectionId, @PathVariable UUID aggregateId) {
+    log.debug("DELETE of aggregate {} requested", aggregateId);
     findRepo(collectionId).deleteById(aggregateId);
   }
 
